@@ -20,3 +20,4 @@ bottomNav 만들기
         app:menu="@menu/bottom_nav_menu" />
 
 ```
+추가시킨다.
