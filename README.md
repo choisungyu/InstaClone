@@ -27,9 +27,24 @@ nav_graph 의 각 fragment id 와 bottom_nav_menu 의 id 를 각각 연결시킨
 
 # nav_host_fragment & BottomNavigationView 연결
 > BottomNavFragment 만들기
-1. nav_host_fragment 와 BottomNavigationView 가 있어야 한다
+1. **nav_host_fragment** 와 **BottomNavigationView** 가 있어야 한다
 2. nav_host_fragment 를 박아두기 위해서는 옵션으로 
 ```xml
 app:navGraph="@navigation/nav_graph" />
 ```
 가 있어야 한다. ( pallete 에서 NavHostFragment 검색해서 긁어온다. )
+
+> **BottomNavigationView**
+> 1. menu를 추가 시켜준다.
+```xml
+        app:menu="@menu/menu_bottom_nav"
+```
+
+# BottomNavFragment 에서 해야할 것
+> nav_host_fragment(= nav_graph) 와 BottomNavigation 을 navController 를 통해서 연결해준다.
+
+# 여기서 중요한 점
+> nav_host_fragment(= nav_graph)
+
+
+
