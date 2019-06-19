@@ -21,3 +21,6 @@ bottomNav 만들기
 
 ```
 추가시킨다.
+
+5.bottom_nav_menu 
+nav_graph 의 각 fragment id 와 bottom_nav_menu 의 id 를 각각 연결시킨다.
