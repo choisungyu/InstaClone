@@ -1,3 +1,5 @@
+# 공부하면서 헷갈리는거 메모
+
 ```xml
 <TextView
         android:text="sign in with Google"
@@ -11,7 +13,7 @@
         android:background="@drawable/btn_google_signin_light_normal_xxhdpi" />
 ```
 
-# bottomNav 만들기
+## bottomNav 만들기
 > 1. 각 연결할 fragment 를 만든다.(3개의 bottom tab 이므로 3개 만듦)
 > 2. fragment_tab 을 만들어서 constraint 에다가 bottomNaviagation 을 둔다
 > 3. bottom_nav_menu 를 만들어서 menu_icon 을 만든다(title, icon도 넣고)
@@ -25,7 +27,7 @@
 5.bottom_nav_menu 
 nav_graph 의 각 fragment id 와 bottom_nav_menu 의 id 를 각각 연결시킨다.
 
-# nav_host_fragment & BottomNavigationView 연결
+## nav_host_fragment & BottomNavigationView 연결
 > BottomNavFragment 만들기
 1. **nav_host_fragment** 와 **BottomNavigationView** 가 있어야 한다
 2. nav_host_fragment 를 박아두기 위해서는 옵션으로 
@@ -40,10 +42,10 @@ app:navGraph="@navigation/nav_graph" />
         app:menu="@menu/menu_bottom_nav"
 ```
 
-# BottomNavFragment 에서 해야할 것
+## BottomNavFragment 에서 해야할 것
 > nav_host_fragment(= nav_graph) 와 BottomNavigation 을 navController 를 통해서 연결해준다.
 
-# 여기서 중요한 점
+## 여기서 중요한 점
 > nav_host_fragment(= nav_graph)
 
 
