@@ -59,3 +59,38 @@ MainActivity.kt
         }
 ```
 
+### 여기서 GoogleSignInClient 가 빨간 불 나는데 객체를 얻어와야 함 https://developers.google.com/identity/sign-in/android/sign-in
+```kotlin
+class LoginActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
+
+    companion object {
+        const val RC_SIGN_IN = 1000
+        const val TAG = "LoginActivity"
+    }
+// ...
+// Initialize Firebase Auth
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login)
+
+        // Configure Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        auth = FirebaseAuth.getInstance()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        button_sign_in.setOnClickListener {
+            signIn()
+        }
+
+    }
+}
+```
+
