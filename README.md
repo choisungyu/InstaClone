@@ -48,5 +48,14 @@ app:navGraph="@navigation/nav_graph" />
 ## 여기서 중요한 점
 > nav_host_fragment(= nav_graph)
 
+## 처음 화면 이동 ( 로그인 인증 안되었을시 -> 로그인 화면으로 가기 )
+MainActivity.kt
 
+```kotlin
+// 처음 화면 이동 ( 로그인 인증 안되었을시 -> 로그인 화면으로 가기 )
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+```
 
