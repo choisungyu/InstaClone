@@ -94,13 +94,15 @@ class LoginActivity : AppCompatActivity() {
 }
 ```
 ### 암시적 인텐트로 signIn 결과값을 가져올 때 startActivityForResult 를 써준다
+```kotlin
 private fun signIn() {
         // 암시적 인텐트로 signIn 결과값을 가져올 때 startActivityForResult
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
+}
+```
 
-AccountFragment.kt 까지 googleSignInClient 객체를 가져와야 함 -> 
+### AccountFragment.kt 까지 googleSignInClient 객체를 가져와야 함 -> 
 ```kotlin
 val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
