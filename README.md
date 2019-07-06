@@ -93,4 +93,39 @@ class LoginActivity : AppCompatActivity() {
     }
 }
 ```
+### 암시적 인텐트로 signIn 결과값을 가져올 때 startActivityForResult 를 써준다
+private fun signIn() {
+        // 암시적 인텐트로 signIn 결과값을 가져올 때 startActivityForResult
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
 
+AccountFragment.kt 까지 googleSignInClient 객체를 가져와야 함 -> 
+```kotlin
+val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+
+-> googleSignInClient.signOut() 도 같이 해줘야 하기 때문 ( FirebaseAuth.getInstance().signOut() 둘 다 해줘야 함 )
+
+...
+override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_sign_out) {
+            FirebaseAuth.getInstance().signOut()
+            googleSignInClient.signOut()
+
+            // 로그인 화면으로 이동
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
+            requireActivity().finish()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+}
+```    
+    
+    
+    
+    
