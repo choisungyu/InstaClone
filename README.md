@@ -194,6 +194,22 @@ class PostRecyclerAdapter(options: FirestoreRecyclerOptions<Post>) :
 ## Firebase 용 RecyclerAdapter 참고하는곳
 https://github.com/firebase/FirebaseUI-Android/tree/master/firestore
 
+## MainActivity 에 BackButton 추가시켜야 하는 것
+```kotlin
+navController = findNavController(R.id.nav_host_fragment)
+        setupActionBarWithNavController(navController)
+```
 
+```xml
+<androidx.appcompat.widget.Toolbar
+        android:background="@android:color/transparent"
+/>
+```
 
-    
+### Common Intents ( : 그림 가져오는 것 )
+https://developer.android.com/guide/components/intents-common#Storage
+
+```text
+imageUri.value = intent.data // imageUri.setValue(intent.getData()) ==> 
+            
+```
