@@ -101,8 +101,8 @@ private fun signIn() {
         startActivityForResult(signInIntent, RC_SIGN_IN)
 }
 ```
-
-### AccountFragment.kt 까지 googleSignInClient 객체를 가져와야 함 -> 
+### AccountFragment
+#### AccountFragment.kt 까지 googleSignInClient 객체를 가져와야 함 -> 
 ```kotlin
 val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -111,9 +111,9 @@ val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 
         googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
 
--> googleSignInClient.signOut() 도 같이 해줘야 하기 때문 ( FirebaseAuth.getInstance().signOut() 둘 다 해줘야 함 )
-
-...
+```
+#### -> googleSignInClient.signOut() 도 같이 해줘야 하기 때문 ( FirebaseAuth.getInstance().signOut() 둘 다 해줘야 함 )
+```kotlin
 override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_sign_out) {
             FirebaseAuth.getInstance().signOut()
@@ -126,8 +126,74 @@ override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return super.onOptionsItemSelected(item)
     }
 }
-```    
-    
-    
-    
+```   
+#### Fragment binding 하는 모습
+```kotlin
+class HomeFragment : Fragment() {
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        val binding = FragmentHomeBinding.bind(view)
+
+        // FirebaseAuth.getInstance().currentUser 가 null 이 아니면 user 객체 를 binding.user 에 넣어라
+        FirebaseAuth.getInstance().currentUser?.let {user->
+            binding.user = user
+        }
+        return binding.root
+    }
+
+
+}
+```
+#### SquareImageView ( Java.class )
+```kotlin   
+public class SquareImageView extends AppCompatImageView {
+    public SquareImageView(Context context) {
+        super(context);
+    }
+
+    public SquareImageView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public SquareImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+    }
+}
+```
+#### (options: FirestoreRecyclerOptions<Post>) = PostRecyclerAdapter 의 생성자
+```kotlin   
+
+class PostRecyclerAdapter(options: FirestoreRecyclerOptions<Post>) :
+        FirestoreRecyclerAdapter<Post, PostRecyclerAdapter.PostViewHolder>(options) {
+        class PostViewHolder(val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root)
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_post, parent, false)
+
+            return PostViewHolder(ItemPostBinding.bind(view))
+        }
+
+        override fun onBindViewHolder(holder: PostViewHolder, postion: Int, model: Post) {
+            holder.binding.post = model
+        }
+    }
+```
+
+## Firebase 용 RecyclerAdapter 참고하는곳
+https://github.com/firebase/FirebaseUI-Android/tree/master/firestore
+
+
+
     
