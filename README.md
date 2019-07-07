@@ -232,6 +232,7 @@ override fun onOptionsItemSelected(item: MenuItem): Boolean {
                     // 백그라운드 처리 ( imageUri )
                     lifecycleScope.launch(Dispatchers.IO) {
 
+                        // viewModel로 보냄
                         val downloadUri = viewModel.uploadImage(stream)
                         Log.d("log", "$downloadUri")
 
@@ -248,11 +249,17 @@ override fun onOptionsItemSelected(item: MenuItem): Boolean {
     }
 ```
 
-#### viewModel 비동기 한줄로 쓰는거 : 
+#### viewModel 비동기 한줄로 쓰는거 : Tasks.await().continueWithTask() {task ->}
+- firebase 를 콜백인 것을 콜백이 아닌것 처럼 바꾸는 것 (순차적) 
+- Tasks.await() 을 써야 함 ( 비동기인데 , 비동기 아닌 것 처럼 해주는 것 )
+- 하지만 Tasks.await() 는 자바에서 못 쓰는 것 ==> coroutine 이랑 같이 써야 하는 것
+
+#### fun uploadImage 를 viewModel 로 빼는 이유?
+
 ```kotlin
 class CreatePostViewModel : ViewModel() {
 
-    // 이 처리를 viewModel 로 빼는 이유?
+    // 이 처리(fun uploadImage)를 viewModel 로 빼는 이유?
     fun uploadImage(stream: InputStream): Uri {
 
         // CreatePostViewModel 에 liveData 객체 가져오는지?
@@ -275,7 +282,12 @@ class CreatePostViewModel : ViewModel() {
 
 }
 ```
+### CoroutineScope 대신에 AC 랑 같이 쓰는 ViewModelScope 이나 LifeCycleScope 를 쓰자
+
+- uploadImage 가 끝나는 시점에서 UI 쪽에서 
+
+### DB 에 넣는 거 => add data 
+https://firebase.google.com/docs/firestore/manage-data/add-data
 
 
-
-
+### progressbar 넣기
