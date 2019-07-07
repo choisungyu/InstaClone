@@ -210,6 +210,72 @@ navController = findNavController(R.id.nav_host_fragment)
 https://developer.android.com/guide/components/intents-common#Storage
 
 ```text
-imageUri.value = intent.data // imageUri.setValue(intent.getData()) ==> 
-            
+imageUri.value = intent.data 
+// imageUri.setValue(intent.getData()) ==> intent해서 가져온 getData 값을 imageUri 에 MutableLiveData 의 메소드 setValue 를 호출해서 set시킴     
 ```
+
+### Firebase ImageUpload 하는 방법 (File 말고 Uri 를 가지고 업로드 시킴 )
+#### 1. 아까 imageUri.getValue 값을 stream 형태로 넘기고 -> 그것을 다시 backgroundThread 에서 돌리기 위해 lifecycleScope.launch(Dispatchers.IO) 사용
+
+- contentResolver : uri -> stream 형태로 변환
+
+```kotlin
+override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_send) {
+            // 이미지 업로드 & DB 에 작성해야 함
+
+            imageUri.value?.let { uri ->
+                val stream = requireActivity().contentResolver.openInputStream(uri)
+
+                stream?.let {
+
+                    // 백그라운드 처리 ( imageUri )
+                    lifecycleScope.launch(Dispatchers.IO) {
+
+                        val downloadUri = viewModel.uploadImage(stream)
+                        Log.d("log", "$downloadUri")
+
+                        launch(Dispatchers.Main) {
+                            // Ui 갱신
+                        }
+                    }
+                }
+            }
+            // 업로드 결과 db에 작성
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+```
+
+#### viewModel 비동기 한줄로 쓰는거 : 
+```kotlin
+class CreatePostViewModel : ViewModel() {
+
+    // 이 처리를 viewModel 로 빼는 이유?
+    fun uploadImage(stream: InputStream): Uri {
+
+        // CreatePostViewModel 에 liveData 객체 가져오는지?
+
+        val ref =
+            FirebaseStorage.getInstance().reference.child("images/${System.currentTimeMillis()}.jpg")
+
+        // ref.putStream(stream)
+        return Tasks.await(ref.putStream(stream).continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+            if (!task.isSuccessful) {
+                task.exception?.let {
+                    throw it
+                }
+            }
+            return@Continuation ref.downloadUrl
+        }))
+
+
+    }
+
+}
+```
+
+
+
+
