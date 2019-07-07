@@ -290,4 +290,5 @@ class CreatePostViewModel : ViewModel() {
 https://firebase.google.com/docs/firestore/manage-data/add-data
 
 
-### progressbar 넣기
+### progressbar 넣기 해야함...
+https://www.youtube.com/watch?v=2xkb0qgZXS8&list=PLxTmPHxRH3VUHBs-zl8qHbkdAcCwsGtyn&index=131
